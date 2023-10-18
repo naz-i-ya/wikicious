@@ -1,18 +1,17 @@
 const { i18n } = require('./next-i18next.config')
 const webpack = require('webpack')
 const { withSentryConfig } = require('@sentry/nextjs')
-const withPWA = require('next-pwa')({
-  dest: 'public',
-  register: true,
-  sw: '/sw.js',
-  skipWaiting: true,
-})
+
+const withPWA = require("next-pwa");
 
 /** @type {import('next').NextConfig} */
+
+
 const nextConfig = {
   i18n,
   images: {
-    domains: ['raw.githubusercontent.com', 'arweave.net', 'www.dual.finance'],
+    domains: ['raw.githubusercontent.com', 'arweave.net', 'www.dual.finance', 'shdw-drive.genesysgo.net'],
+
   },
   reactStrictMode: true,
   //proxy for openserum api cors
@@ -45,7 +44,12 @@ const nextConfig = {
 }
 
 module.exports = withSentryConfig(
-  nextConfig,
+  withPWA({
+    dest: 'public',
+    register: true,
+    disable: false,
+    skipWaiting: true,
+  })(nextConfig),
   {
     // For all available options, see:
     // https://github.com/getsentry/sentry-webpack-plugin#options
